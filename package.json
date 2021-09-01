@@ -1,6 +1,5 @@
 {
   "name": "kosmo",
-  "version": "0.0.1",
   "license": "GPL-3.0-only",
   "scripts": {
     "bot": "node src/index.js"
