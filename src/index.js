@@ -7,7 +7,7 @@ const logger = require("./logging");
 logger.info("Starting...");
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-client.revision = execSync("git rev-parse --short HEAD").toString().trim();
+client.revision = execSync("git rev-parse HEAD").toString().trim();
 
 const
   commandFiles = fs.readdirSync(`${__dirname}/commands`).filter(f => f.endsWith(".js")),

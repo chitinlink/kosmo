@@ -9,11 +9,11 @@ module.exports = {
     if (!command) return;
 
     try {
-      logger.info(`Invoked command ${command.name}.`);
+      logger.info(`Invoked command: ${command.data.name}.`);
       await command.execute(interaction);
     }
     catch (error) {
-      logger.error(`Error (${command.name})`);
+      logger.error(`Error (${command.data.name})`);
       logger.error(error);
       await interaction.reply({
         content: "There was an error while executing this command!",
