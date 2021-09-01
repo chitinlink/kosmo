@@ -1,7 +1,7 @@
 {
   "name": "kosmo",
   "version": "0.0.1",
-  "license": "Fill this in later",
+  "license": "GPL-3.0-only",
   "scripts": {
     "deploy": "node src/deploy-commands.js",
     "bot": "node src/index.js"
