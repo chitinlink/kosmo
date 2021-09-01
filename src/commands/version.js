@@ -5,6 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("version")
     .setDescription("Shows Kosmo version information."),
+
   async execute(interaction) {
     const { revision } = interaction.client;
     const last_updated = execSync("git log -1 --date=relative --format=%ad")

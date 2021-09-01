@@ -1,0 +1,7 @@
+module.exports = {
+  "token": "",
+  "client_id": NaN,
+  "guild_id": NaN,
+  "notice_channel_id": NaN,
+  "mod_roles": []
+};

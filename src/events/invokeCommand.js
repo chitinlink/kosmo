@@ -1,4 +1,5 @@
 const logger = require("../logging.js");
+const { fmt_origin } = require("../utils/text.js");
 
 module.exports = {
   name: "interactionCreate",
@@ -8,17 +9,16 @@ module.exports = {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
 
-    try {
-      logger.info(`Invoked command: ${command.data.name}.`);
-      await command.execute(interaction);
-    }
-    catch (error) {
-      logger.error(`Error (${command.data.name})`);
-      logger.error(error);
-      await interaction.reply({
-        content: "There was an error while executing this command!",
-        ephemeral: true
+    logger.info(`${fmt_origin(interaction)} invoked command: ${command.data.name}.`);
+
+    command.execute(interaction)
+      .catch(async error => {
+        logger.error(`Error (${command.data.name})`);
+        logger.error(error);
+        await interaction.reply({
+          content: "There was an error while executing this command!",
+          ephemeral: true
+        });
       });
-    }
   },
 };

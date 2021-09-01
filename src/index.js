@@ -1,12 +1,15 @@
 const fs = require("fs");
 const { execSync } = require("child_process");
 const { Client, Collection, Intents } = require("discord.js");
-const { token } = require("./config.json");
+const { token } = require("./config.js");
 const logger = require("./logging");
 
-logger.info("Starting...");
+logger.info("Deploying guild commands...");
+require("./deploy-commands.js")();
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+logger.info("Setting up the client...");
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 client.revision = execSync("git rev-parse HEAD").toString().trim();
 
 const
