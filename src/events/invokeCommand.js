@@ -9,7 +9,12 @@ module.exports = {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
 
-    logger.info(`${fmt_origin(interaction)} invoked command: ${command.data.name}.`);
+    // TODO add options to this using interaction.option.data
+    // At the very least subcommandgroups and subcommands
+    logger.info(
+      `${fmt_origin(interaction)} invoked command: ` +
+      `${interaction.commandName} `
+    );
 
     command.execute(interaction)
       .catch(async error => {
