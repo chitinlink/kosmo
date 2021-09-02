@@ -26,4 +26,4 @@ export const execute = async interaction => {
         ephemeral: true
       });
     });
-}
+};

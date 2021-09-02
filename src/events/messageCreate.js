@@ -17,4 +17,4 @@ export const execute = async message => {
   if (message.attachments.size > 0) {
     message.attachments.forEach(a => logger.message(`  ${a.url}`));
   }
-}
+};
