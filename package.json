@@ -1,6 +1,7 @@
 {
   "name": "kosmo",
   "license": "GPL-3.0-only",
+  "type": "module",
   "scripts": {
     "bot": "node src/index.js"
   },
@@ -12,6 +13,7 @@
     "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.15.0",
     "discord-api-types": "^0.22.0",
     "eslint": "^7.32.0"
   }

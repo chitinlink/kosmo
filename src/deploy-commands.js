@@ -1,16 +1,16 @@
-const fs = require("fs");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { client_id, guild_id, token } = require("./config.js");
-const logger = require("./logging.js");
+import fs from "fs";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import { client_id, guild_id, token } from "./config.js";
+import logger from "./logging.js";
 
-module.exports = async () => {
+export default async () => {
   const commands = [];
-  const commandFiles = fs.readdirSync(`${__dirname}/commands`)
+  const commandFiles = fs.readdirSync(new URL("commands", import.meta.url))
     .filter(file => file.endsWith(".js"));
 
   for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = await import(`./commands/${file}`);
     commands.push(command.data.toJSON());
   }
 

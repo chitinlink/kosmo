@@ -1,5 +1,5 @@
-const winston = require("winston");
-require("winston-daily-rotate-file");
+import winston from "winston";
+import "winston-daily-rotate-file";
 
 const TIMESTAMP_FORMAT = "YYYY/MM/DD_hh:mm:ss";
 
@@ -45,4 +45,4 @@ const logger = winston.createLogger({
 
 winston.addColors(customLevels.colors);
 
-module.exports = logger;
+export default logger;

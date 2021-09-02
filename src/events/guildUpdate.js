@@ -1,9 +1,7 @@
-const logger = require("../logging.js");
+import logger from "../logging.js";
 
-module.exports = {
-  name: "guildUpdate",
-  async execute(oldGuild, newGuild) {
-    if (oldGuild.name === newGuild.name) return;
-    logger.info(`The guild ${oldGuild.name} has been renamed to ${newGuild.name}`);
-  },
-};
+export const name = "guildUpdate";
+export const execute = async (oldGuild, newGuild) => {
+  if (oldGuild.name === newGuild.name) return;
+  logger.info(`The guild ${oldGuild.name} has been renamed to ${newGuild.name}`);
+}
