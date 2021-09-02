@@ -13,7 +13,7 @@ module.exports = {
 
     return interaction.reply(
       `Kosmo (commit \`${revision}\`) — Last updated ${last_updated}\n` +
-      ":minidisc: https://github.com/technoabyss/kosmo"
+      ":minidisc: <https://github.com/technoabyss/kosmo>"
     );
   },
 };
