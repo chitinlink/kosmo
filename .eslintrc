@@ -29,16 +29,6 @@
     "keyword-spacing":       ["error", { "before": true, "after": true }],
     "array-bracket-spacing": ["error", "never"],
     "no-multi-spaces":       ["error"],
-    // { "exceptions": {
-    //   "VariableDeclarator":    true,
-    //   "ImportDeclaration":     true,
-    //   "ImportSpecifier":       true,
-    //   "AssignmentExpression":  true,
-    //   "ConditionalExpression": true,
-    //   "CallExpression":        true,
-    //   "LogicalExpression":     true,
-    //   "JSXOpeningElement":     true
-    // } }],
     "no-var":                ["error"],
     "yoda":                  ["error", "never"],
     "eqeqeq":                ["error"],
