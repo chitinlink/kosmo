@@ -19,7 +19,7 @@ const format_colorized = winston.format.combine(
 const customLevels = {
   levels: { error: 0, warn: 1, info: 2, message: 3, debug: 4 },
   colors: {
-    error: "whiteBG, red",
+    error: "red", //"bold white redBG",
     warn: "yellow",
     info: "green",
     message: "white",
