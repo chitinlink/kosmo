@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import logger from "../logging.js";
+import { MessageActionRow, MessageSelectMenu } from "discord.js";
+import { fmt_list } from "../utils/text.js";
 
 export const data = new SlashCommandBuilder()
   .setName("role")
@@ -7,16 +8,6 @@ export const data = new SlashCommandBuilder()
   .addSubcommand(sub => sub
     .setName("list")
     .setDescription("List all self-assignable roles."))
-  // .addSubcommand(sub => sub
-  //   .setName("register")
-  //   .setDescription("Register a role as self-assignable.")
-  //   .addRoleOption(o => o.setRequired(true).setName("role")
-  //     .setDescription("The role that will become available")))
-  // .addSubcommand(sub => sub
-  //   .setName("deregister")
-  //   .setDescription("Deregister a role as self-assignable.")
-  //   .addRoleOption(o => o.setRequired(true).setName("role")
-  //     .setDescription("The role that will no longer be available")))
   .addSubcommand(sub => sub
     .setName("add")
     .setDescription("Assign yourself a role."))
@@ -27,13 +18,74 @@ export const data = new SlashCommandBuilder()
 export const execute = async interaction => {
   const subcommand = interaction.options.getSubcommand(true);
 
+  const roles_db = interaction.client.db.get("roles");
+  roles_db.read();
+
+  const available_roles = await interaction.guild.roles.fetch()
+    .then(roles => Array.from(roles.values())
+      .filter(r => roles_db.data.indexOf(r.id) !== -1));
+
+  const member_roles = available_roles
+    .filter(role => interaction.member.roles.cache.has(role.id));
+
+  const possible_roles = available_roles
+    .filter(role => !interaction.member.roles.cache.has(role.id));
+
+  // role list
   if (subcommand === "list") {
     return interaction.reply({
       ephemeral: true,
-      content: ""
+      content: fmt_list(available_roles)
     });
   }
 
-  logger.warn("Unimplemented");
-  return interaction.reply(":warning: Unimplemented");
+  // role add
+  // Interaction handled in events/roleAdd.js
+  if (subcommand === "add") {
+    if (possible_roles.length === 0) return interaction.reply({
+      ephemeral: true,
+      content: "You already have all the roles you can add!"
+    });
+
+    const row = new MessageActionRow()
+      .addComponents(new MessageSelectMenu()
+        .setCustomId("roleAdd")
+        .setPlaceholder("Select roles")
+        .setMinValues(1)
+        .addOptions(possible_roles.map(r => ({
+          label: r.name,
+          value: r.id
+        }))));
+
+    return interaction.reply({
+      ephemeral: true,
+      content: "Please choose the roles you want:",
+      components: [row]
+    });
+  }
+
+  // role remove
+  // Interaction handled in events/roleRemove.js
+  if (subcommand === "remove") {
+    if (member_roles.length === 0) return interaction.reply({
+      ephemeral: true,
+      content: "You don't have any roles you can remove!"
+    });
+
+    const row = new MessageActionRow()
+      .addComponents(new MessageSelectMenu()
+        .setCustomId("roleRemove")
+        .setPlaceholder("Select roles")
+        .setMinValues(1)
+        .addOptions(member_roles.map(r => ({
+          label: r.name,
+          value: r.id
+        }))));
+
+    return interaction.reply({
+      ephemeral: true,
+      content: "Please choose the roles you don't want:",
+      components: [row]
+    });
+  }
 };

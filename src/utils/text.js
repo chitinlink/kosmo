@@ -34,3 +34,8 @@ export const fmt_user = user =>
 export const fmt_origin = message =>
   `${fmt_guild(message.guild)} #${message.channel.name} @${fmt_user(message.author || message.user)}`;
 
+/**
+ * Formats an array of strings into a list.
+ * @param {string[]} list
+ */
+export const fmt_list = list => [""].concat(list).join("\n• ").trim();
