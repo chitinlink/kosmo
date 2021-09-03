@@ -5,6 +5,11 @@ import { token } from "./config.js";
 import logger from "./logging.js";
 import deploy_commands from "./deploy-commands.js";
 
+process.on("SIGINT", () => { logger.info("Caught SIGINT"); process.exit(); });
+process.on("SIGTERM", () => { logger.info("Caught SIGTERM"); process.exit(); });
+process.on("warning", w => logger.warn(w.stack));
+process.on("exit", () => logger.info("Exiting."));
+
 logger.info("Starting...");
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
@@ -13,7 +18,11 @@ client.commands = new Collection();
 
 const setup_tasks = [
   // Register commands on discord's side
-  deploy_commands(),
+  deploy_commands()
+    .then(cmds => logger.info(
+      "Registered guild commands: " +
+      cmds.map(c => c.name).join(", ")
+    )),
 
   // Commands
   readdir(new URL("commands", import.meta.url))
@@ -27,18 +36,19 @@ const setup_tasks = [
 
   // Events
   readdir(new URL("events", import.meta.url))
-  .then(files => files
-    .filter(f => f.endsWith(".js"))
-    .forEach(async f => {
-      const event = await import(`./events/${f}`);
-      if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args));
-      } else {
-        client.on(event.name, (...args) => event.execute(...args));
-      }
-    }))
-  .then(() => logger.info("Loaded events."))
+    .then(files => files
+      .filter(f => f.endsWith(".js"))
+      .forEach(async f => {
+        const event = await import(`./events/${f}`);
+        if (event.once) {
+          client.once(event.name, (...args) => event.execute(...args));
+        } else {
+          client.on(event.name, (...args) => event.execute(...args));
+        }
+      }))
+    .then(() => logger.info("Loaded events."))
 ];
 
 Promise.all(setup_tasks)
-  .then(() => client.login(token));
+  .then(() => client.login(token))
+  .catch(error => logger.error(error.stack));
