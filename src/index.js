@@ -1,9 +1,10 @@
-import { readdir } from "fs/promises";
 import { execSync } from "child_process";
 import { Client, Collection, Intents } from "discord.js";
 import { token } from "./config.js";
 import logger from "./logging.js";
-import deploy_commands from "./deploy-commands.js";
+import deployCommands from "./setup/deployCommands.js";
+import initCommands from "./setup/initCommands.js";
+import initEvents from "./setup/initEvents.js";
 
 process.on("SIGINT", () => { logger.info("Caught SIGINT"); process.exit(); });
 process.on("SIGTERM", () => { logger.info("Caught SIGTERM"); process.exit(); });
@@ -16,39 +17,6 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.revision = execSync("git rev-parse HEAD").toString().trim();
 client.commands = new Collection();
 
-const setup_tasks = [
-  // Register commands on discord's side
-  deploy_commands()
-    .then(cmds => logger.info(
-      "Registered guild commands: " +
-      cmds.map(c => c.name).join(", ")
-    )),
-
-  // Commands
-  readdir(new URL("commands", import.meta.url))
-    .then(files => files
-      .filter(f => f.endsWith(".js"))
-      .forEach(async f => {
-        const command = await import(`./commands/${f}`);
-        client.commands.set(command.data.name, command);
-      }))
-    .then(() => logger.info("Loaded commands.")),
-
-  // Events
-  readdir(new URL("events", import.meta.url))
-    .then(files => files
-      .filter(f => f.endsWith(".js"))
-      .forEach(async f => {
-        const event = await import(`./events/${f}`);
-        if (event.once) {
-          client.once(event.name, (...args) => event.execute(...args));
-        } else {
-          client.on(event.name, (...args) => event.execute(...args));
-        }
-      }))
-    .then(() => logger.info("Loaded events."))
-];
-
-Promise.all(setup_tasks)
+Promise.all([deployCommands(), initCommands(client), initEvents(client)])
   .then(() => client.login(token))
   .catch(error => logger.error(error.stack));
