@@ -19,8 +19,7 @@ export const execute = async interaction => {
 
   command.execute(interaction)
     .catch(async (error) => {
-      logger.error(`Error (${command.data.name})`);
-      logger.error(error);
+      logger.error(`(${command.data.name}) ${error.stack}`);
       await interaction.reply({
         content: "There was an error while executing this command!",
         ephemeral: true
