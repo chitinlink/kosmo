@@ -12,9 +12,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Whether you want to send the message anonymously."));
 
 export const execute = async interaction => {
-  const isAnon = interaction.options.getBoolean("anonymous");
-
-  console.log("");
+  const isAnon = interaction.options.getBoolean("anonymous") || false;
 
   return interaction.client.notice_channel
     .send({
