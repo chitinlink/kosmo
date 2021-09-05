@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import { Client, Collection, Intents } from "discord.js";
 import logger from "./logging.js";
-import { token, notice_channel_id } from "./config.js";
+import { token, notice_channel_id, guild_id } from "./config.js";
 import deployCommands from "./setup/deployCommands.js";
 import initCommands from "./setup/initCommands.js";
 import initEvents from "./setup/initEvents.js";
@@ -35,6 +35,10 @@ Promise.all([
   initDatabase(client)
 ])
   .then(() => client.login(token))
+  // Admin notice channel
   .then(async () => client.notice_channel = await client.channels
     .fetch(notice_channel_id))
+  // Guild the bot is assigned to
+  .then(async () => client.assigned_guild = await client.guilds
+    .fetch(guild_id))
   .catch(error => logger.error(error.stack));
