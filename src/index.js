@@ -16,7 +16,13 @@ process.on("exit", () => logger.info("Exiting."));
 logger.info("Starting...");
 
 // discord.js client
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS
+  ]
+});
 
 // For use in /version
 client.revision = execSync("git rev-parse HEAD").toString().trim();
