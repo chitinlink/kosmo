@@ -2,7 +2,7 @@ import logger from "../logging.js";
 import { fmt_origin, fmt_plural } from "../utils/text.js";
 
 export const name = "messageCreate";
-export const execute = async message => {
+export const execute = async (client, message) => {
 
   let msg = `${fmt_origin(message)}: `;
 

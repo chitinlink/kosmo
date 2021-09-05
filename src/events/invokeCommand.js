@@ -2,11 +2,11 @@ import logger from "../logging.js";
 import { fmt_origin } from "../utils/text.js";
 
 export const name = "interactionCreate";
-export const execute = async interaction => {
+export const execute = async (client, interaction) => {
   if (!interaction.isCommand())
     return;
 
-  const command = interaction.client.commands.get(interaction.commandName);
+  const command = client.commands.get(interaction.commandName);
   if (!command)
     return;
 

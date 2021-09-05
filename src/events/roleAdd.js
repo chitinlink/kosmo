@@ -1,7 +1,7 @@
 import { fmt_plural } from "../utils/text.js";
 
 export const name = "interactionCreate";
-export const execute = async interaction => {
+export const execute = async (client, interaction) => {
   if (!interaction.isSelectMenu()) return;
   if (interaction.customId !== "roleAdd") return;
 
