@@ -5,7 +5,7 @@ const pp = options => options
   .map(o => {
     if (o.value) { return `${o.name}:${o.value}`; }
     else if (o.options) { return `${o.name} ${pp(o.options)}`; }
-    else { return ""; }
+    else { return o.name; }
   })
   .join(" ");
 
