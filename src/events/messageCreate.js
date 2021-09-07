@@ -6,9 +6,8 @@ export const execute = async (client, message) => {
 
   let msg = `${fmt_origin(message)}: `;
 
-  if (message.attachments.size > 0)
-    msg +=
-      `(${message.attachments.size} attachment${fmt_plural(message.attachments.size)}) `;
+  if (message.attachments.size > 0) msg +=
+    `(${message.attachments.size} attachment${fmt_plural(message.attachments.size)}) `;
 
   msg += message.content;
 
