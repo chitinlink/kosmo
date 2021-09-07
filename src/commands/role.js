@@ -5,6 +5,7 @@ import { fmt_list } from "../utils/text.js";
 export const data = new SlashCommandBuilder()
   .setName("role")
   .setDescription("Role-related tools.")
+  .setDefaultPermission(true)
   .addSubcommand(sub => sub
     .setName("list")
     .setDescription("List all self-assignable roles."))
@@ -19,17 +20,11 @@ export const execute = async interaction => {
   const subcommand = interaction.options.getSubcommand(true);
 
   const roles_db = interaction.client.db.get("roles");
-  roles_db.read();
+  await roles_db.read();
 
   const available_roles = await interaction.guild.roles.fetch()
     .then(roles => Array.from(roles.values())
       .filter(r => roles_db.data.indexOf(r.id) !== -1));
-
-  const member_roles = available_roles
-    .filter(role => interaction.member.roles.cache.has(role.id));
-
-  const possible_roles = available_roles
-    .filter(role => !interaction.member.roles.cache.has(role.id));
 
   // role list
   if (subcommand === "list") {
@@ -38,6 +33,12 @@ export const execute = async interaction => {
       content: fmt_list(available_roles)
     });
   }
+
+  const member_roles = available_roles
+    .filter(role => interaction.member.roles.cache.has(role.id));
+
+  const possible_roles = available_roles
+    .filter(role => !interaction.member.roles.cache.has(role.id));
 
   // role add
   // Interaction handled in events/roleAdd.js

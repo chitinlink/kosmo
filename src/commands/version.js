@@ -4,7 +4,8 @@ import { MessageActionRow, MessageButton } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("version")
-  .setDescription("Shows Kosmo version information.");
+  .setDescription("Show Kosmo version information.")
+  .setDefaultPermission(true);
 
 export const execute = async interaction => {
   const { revision } = interaction.client;

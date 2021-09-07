@@ -3,6 +3,7 @@ import { SlashCommandBuilder, userMention } from "@discordjs/builders";
 export const data = new SlashCommandBuilder()
   .setName("modmail")
   .setDescription("Send a message to the mod team. Can be anonymous.")
+  .setDefaultPermission(true)
   .addStringOption(o => o
     .setName("message")
     .setDescription("Your message")
