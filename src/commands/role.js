@@ -17,10 +17,15 @@ export const data = new SlashCommandBuilder()
     .setDescription("Remove a role you have."));
 
 export const execute = async interaction => {
-  const subcommand = interaction.options.getSubcommand(true);
-
   const roles_db = interaction.client.db.get("roles");
   await roles_db.read();
+
+  if (roles_db.data.length === 0) return interaction.reply({
+    ephemeral: true,
+    content: "There are no self-assignable roles at this time."
+  });
+
+  const subcommand = interaction.options.getSubcommand(true);
 
   const available_roles = await interaction.guild.roles.fetch()
     .then(roles => Array.from(roles.values())
