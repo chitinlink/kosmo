@@ -18,7 +18,7 @@ export default async client => readdir(new URL("./database", import.meta.url))
         await readFile(new URL(`./database/${name}/${name}.starter.json`, import.meta.url))
       );
 
-      db.read()
+      await db.read()
         .then(() => db.data ||= starter)
         .then(data => {
           if (!validator.validate(data, schema).valid) {
