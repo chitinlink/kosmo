@@ -17,7 +17,7 @@ export const execute = async interaction => {
       new MessageButton()
         .setStyle("LINK")
         .setLabel("Source code")
-        .setURL("https://github.com/technoabyss/kosmo"));
+        .setURL("https://github.com/chitinlink/kosmo"));
 
   return interaction.reply({
     ephemeral: true,
