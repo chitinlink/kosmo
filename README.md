@@ -16,4 +16,8 @@ Tested on Node.js v16.6.1.
 
 1. Copy `src/config.js.schema` into `src/config.js` and fill it in
 2. `npm i`
-3. `npm run bot`
+3. `npm install pm2@latest -g`
+
+Start: `npm run start`
+
+Stop: `npm run stop`

@@ -17,7 +17,7 @@ export const fmt_plural = t => {
  * @param {Guild} guild
  */
 export const fmt_guild = guild =>
-  `<${guild.id}> ${guild.name}`; //+
+  `<${guild.id}>${guild.name}`; //+
   //`(${guild.memberCount} member${fmt_plural(guild.memberCount)})`;
 
 /**
@@ -25,14 +25,14 @@ export const fmt_guild = guild =>
  * @param {User} user
  */
 export const fmt_user = user =>
-  `${user.system ? "(SYSTEM) " : ""}${user.bot ? "(BOT) " : ""}${user.tag}`;
+  `${user.system ? "(SYSTEM)" : ""}${user.bot ? "(BOT)" : ""}${user.tag}`;
 
 /**
  * Formats the origin of a message or interaction into a consistent style.
  * @param {Message|Interaction} message
  */
 export const fmt_origin = message =>
-  `${fmt_guild(message.guild)} #${message.channel.name} @${fmt_user(message.author || message.user)}`;
+  `${fmt_guild(message.guild)}#${message.channel.name}@${fmt_user(message.author || message.user)}`;
 
 /**
  * Formats an array of strings into a list.

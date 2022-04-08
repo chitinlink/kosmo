@@ -3,6 +3,7 @@ import { Routes } from "discord-api-types/v9";
 import { client_id, guild_id, token } from "../config.js";
 import { readdir } from "fs/promises";
 import logger from "../logging.js";
+import { fmt_list } from "../utils/text.js";
 
 const rest = new REST({ version: "9" }).setToken(token);
 
@@ -15,6 +16,6 @@ export default async () => readdir(new URL("../commands", import.meta.url))
     { body: await Promise.all(commands) },
   ))
   .then(cmds => logger.info(
-    "Registered guild commands: " +
-    cmds.map(c => c.name).join(", ")
+    "Registered guild commands: \n" +
+    fmt_list(cmds.map(c => c.name))
   ));

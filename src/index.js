@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import { access, writeFileSync, unlinkSync } from "fs";
 import { Client, Collection, Intents } from "discord.js";
 import logger from "./logging.js";
 import deployCommands from "./setup/deployCommands.js";
@@ -8,11 +9,25 @@ import initDatabase from "./setup/initDatabase.js";
 import deployCommandPermissions from "./setup/deployCommandPermissions.js";
 import { token, notice_channel_id, guild_id, mod_roles } from "./config.js";
 
+// Command-line arguments
+// const args = process.argv.splice(2);
+
 // Node process event logging
 process.on("SIGINT", () => { logger.info("Caught SIGINT"); process.exit(); });
 process.on("SIGTERM", () => { logger.info("Caught SIGTERM"); process.exit(); });
 process.on("warning", w => logger.warn(w.stack));
 process.on("exit", () => logger.info("Exiting."));
+
+// process.on("uncaughtExceptionMonitor", err => {
+//   logger.error(err.stack);
+// });
+// Workaround for https://github.com/winstonjs/winston/issues/1802
+// Switch to commented out code above when fixed (?)
+process.on("uncaughtException", (err) => {
+  logger.error(err.stack);
+  writeFileSync("./.crashed", "");
+  logger.on("finish", () => process.exit(1));
+});
 
 logger.info("Starting...");
 
@@ -24,6 +39,8 @@ const client = new Client({
     Intents.FLAGS.GUILD_MEMBERS
   ]
 });
+
+//#region Setup
 
 // For use in /version
 client.revision = execSync("git rev-parse HEAD").toString().trim();
@@ -60,3 +77,17 @@ await initEvents(client);
 
 // Initialize client.db
 await initDatabase(client);
+
+//#endregion Setup
+
+// Warn mods if the bot crashed.
+access("./.crashed", err => {
+  if (!err) {
+    client.notice_channel.send({
+      content: ":plunger: I crashed, and have restarted."
+    });
+    unlinkSync("./.crashed");
+  }
+});
+
+logger.info("Done with setup.");
