@@ -31,6 +31,14 @@ export const execute = async interaction => {
 
   const subcommand = interaction.options.getSubcommand(true);
 
+  // color list
+  if (subcommand === "list") {
+    return interaction.reply({
+      ephemeral: true,
+      content: fmt_list(available_colors)
+    });
+  }
+
   // color set
   if (subcommand === "set") {
     const color = interaction.options.getRole("color");
@@ -50,14 +58,6 @@ export const execute = async interaction => {
     return interaction.reply({
       ephemeral: true,
       content: ":white_check_mark: Color set!"
-    });
-  }
-
-  // color list
-  if (subcommand === "list") {
-    return interaction.reply({
-      ephemeral: true,
-      content: fmt_list(available_colors)
     });
   }
 };

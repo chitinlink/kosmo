@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageActionRow, MessageSelectMenu } from "discord.js";
 import { fmt_list } from "../utils/text.js";
 
 export const data = new SlashCommandBuilder()
@@ -11,10 +10,18 @@ export const data = new SlashCommandBuilder()
     .setDescription("List all self-assignable roles."))
   .addSubcommand(sub => sub
     .setName("add")
-    .setDescription("Assign yourself a role."))
+    .setDescription("Assign yourself a role.")
+    .addRoleOption(o => o
+      .setName("role")
+      .setDescription("The role you want.")
+      .setRequired(true)))
   .addSubcommand(sub => sub
     .setName("remove")
-    .setDescription("Remove a role you have."));
+    .setDescription("Remove a role you have.")
+    .addRoleOption(o => o
+      .setName("role")
+      .setDescription("The role you want to remove.")
+      .setRequired(true)));
 
 export const execute = async interaction => {
   const roles_db = interaction.client.db.get("roles");
@@ -25,11 +32,14 @@ export const execute = async interaction => {
     content: "There are no self-assignable roles at this time."
   });
 
-  const subcommand = interaction.options.getSubcommand(true);
-
   const available_roles = await interaction.guild.roles.fetch()
     .then(roles => Array.from(roles.values())
       .filter(r => roles_db.data.indexOf(r.id) !== -1));
+
+  const member_roles = available_roles
+    .filter(role => interaction.member.roles.cache.has(role.id));
+
+  const subcommand = interaction.options.getSubcommand(true);
 
   // role list
   if (subcommand === "list") {
@@ -39,59 +49,49 @@ export const execute = async interaction => {
     });
   }
 
-  const member_roles = available_roles
-    .filter(role => interaction.member.roles.cache.has(role.id));
+  let role;
+  if (subcommand === "add" || subcommand === "remove") {
+    role = interaction.options.getRole("role");
 
-  const possible_roles = available_roles
-    .filter(role => !interaction.member.roles.cache.has(role.id));
+    if (!available_roles.includes(role)) {
+      return interaction.reply({
+        ephemeral: true,
+        content: "You can't self-assign that role."
+      });
+    }
+  }
 
   // role add
-  // Interaction handled in events/roleAdd.js
   if (subcommand === "add") {
-    if (possible_roles.length === 0) return interaction.reply({
-      ephemeral: true,
-      content: "You already have all the roles you can add!"
-    });
+    if (member_roles.includes(role)) {
+      return interaction.reply({
+        ephemeral: true,
+        content: "You already have that role."
+      });
+    }
 
-    const row = new MessageActionRow()
-      .addComponents(new MessageSelectMenu()
-        .setCustomId("roleAdd")
-        .setPlaceholder("Select roles")
-        .setMinValues(1)
-        .addOptions(possible_roles.map(r => ({
-          label: r.name,
-          value: r.id
-        }))));
+    await interaction.member.roles.add(role);
 
     return interaction.reply({
       ephemeral: true,
-      content: "Please choose the roles you want:",
-      components: [row]
+      content: ":white_check_mark: Role added!"
     });
   }
 
   // role remove
-  // Interaction handled in events/roleRemove.js
   if (subcommand === "remove") {
-    if (member_roles.length === 0) return interaction.reply({
-      ephemeral: true,
-      content: "You don't have any roles you can remove!"
-    });
+    if (!member_roles.includes(role)) {
+      return interaction.reply({
+        ephemeral: true,
+        content: "You already don't have that role."
+      });
+    }
 
-    const row = new MessageActionRow()
-      .addComponents(new MessageSelectMenu()
-        .setCustomId("roleRemove")
-        .setPlaceholder("Select roles")
-        .setMinValues(1)
-        .addOptions(member_roles.map(r => ({
-          label: r.name,
-          value: r.id
-        }))));
+    await interaction.member.roles.remove(role);
 
     return interaction.reply({
       ephemeral: true,
-      content: "Please choose the roles you don't want:",
-      components: [row]
+      content: ":white_check_mark: Role removed!"
     });
   }
 };
