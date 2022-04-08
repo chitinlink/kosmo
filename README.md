@@ -1,6 +1,6 @@
 # Kosmoceratidae
 
-Server utilities bot. Uses [discord.js](https://discord.js.org/), on Discord API v9, with application commands.
+Server utilities bot. Uses [discord.js](https://discord.js.org/), on Discord API v10, with application commands.
 
 Tested on Node.js v16.6.1.
 
@@ -21,3 +21,5 @@ Tested on Node.js v16.6.1.
 Start: `npm run start`
 
 Stop: `npm run stop`
+
+See also [how to have it run on machine reboot](https://pm2.keymetrics.io/docs/usage/startup/).
