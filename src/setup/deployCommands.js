@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
-import { client_id, guild_id, token } from "../config.js";
+import { client_id, guild_id, token } from "../../config.js";
 import { readdir } from "fs/promises";
 import logger from "../logging.js";
 import { fmt_list } from "../utils/text.js";

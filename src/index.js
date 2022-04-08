@@ -7,7 +7,7 @@ import initCommands from "./setup/initCommands.js";
 import initEvents from "./setup/initEvents.js";
 import initDatabase from "./setup/initDatabase.js";
 import deployCommandPermissions from "./setup/deployCommandPermissions.js";
-import { token, notice_channel_id, guild_id, mod_roles } from "./config.js";
+import { token, notice_channel_id, guild_id, mod_roles } from "../config.js";
 
 // Command-line arguments
 // const args = process.argv.splice(2);
