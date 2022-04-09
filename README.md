@@ -14,12 +14,14 @@ Tested on Node.js v16.6.1.
 
 ### Bot
 
-1. Copy `src/config.js.schema` into `src/config.js` and fill it in
+1. Copy `config.js.schema` into `config.js` and fill it in
 2. `npm i`
 3. `npm install pm2@latest -g`
 
 Start: `npm run start`
 
 Stop: `npm run stop`
+
+Logs available at `logs/`, data stored at `data/`.
 
 See also [how to have it run on machine reboot](https://pm2.keymetrics.io/docs/usage/startup/).
