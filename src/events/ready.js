@@ -1,6 +1,6 @@
 import logger from "../logging.js";
 import { fmt_guild, fmt_user } from "../utils/text.js";
-import { guild_id } from "../config.js";
+import { guild_id } from "../../config.js";
 
 export const name = "ready";
 export const once = true;
