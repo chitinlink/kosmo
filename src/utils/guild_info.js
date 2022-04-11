@@ -1,10 +1,8 @@
 import logger from "../logging.js";
-import { fmt_guild, fmt_user } from "../utils/text.js";
+import { fmt_guild, fmt_user } from "./text.js";
 import { guild_id } from "../../config.js";
 
-export const name = "ready";
-export const once = true;
-export const execute = async client => {
+export const guild_info = async client => {
   const guilds = await client.guilds.fetch({ limit: 200 });
 
   logger.info(`Logged in as ${fmt_user(client.user)}, assigned to guild ${guild_id}.`);

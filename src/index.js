@@ -7,10 +7,11 @@ import initCommands from "./setup/initCommands.js";
 import initEvents from "./setup/initEvents.js";
 import initDatabase from "./setup/initDatabase.js";
 import deployCommandPermissions from "./setup/deployCommandPermissions.js";
+import { guild_info } from "./utils/guild_info.js";
 import { token, notice_channel_id, guild_id, mod_roles } from "../config.js";
 
 // Command-line arguments
-// const args = process.argv.splice(2);
+const args = process.argv.splice(2);
 
 // Node process event logging
 process.on("SIGINT", () => { logger.info("Caught SIGINT"); process.exit(); });
@@ -83,11 +84,17 @@ await initDatabase(client);
 // Warn mods if the bot crashed.
 access("./.crashed", err => {
   if (!err) {
-    client.notice_channel.send({
-      content: ":plunger: I crashed, and have restarted."
-    });
+    // Dev switch to avoid spam
+    if (!args.includes("--ignore-crashes")) {
+      client.notice_channel.send({
+        content: ":plunger: I crashed, and have restarted."
+      });
+    }
     unlinkSync("./.crashed");
   }
 });
+
+// Log guild info
+await guild_info(client);
 
 logger.info("Done with setup.");

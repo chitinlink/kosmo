@@ -22,6 +22,11 @@ Start: `npm run start`
 
 Stop: `npm run stop`
 
+While developing, use the `--ignore-crashes` flag to avoid spamming your notice channel with warnings:
+```sh
+npm run bot -- --ignore-crashes
+```
+
 Logs available at `logs/`, data stored at `data/`.
 
 See also [how to have it run on machine reboot](https://pm2.keymetrics.io/docs/usage/startup/).
