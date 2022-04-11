@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { fmt_list } from "../utils/text.js";
-import { sample } from "lodash";
+import _ from "lodash";
 
 export const data = new SlashCommandBuilder()
   .setName("color")
@@ -70,7 +70,7 @@ export const execute = async interaction => {
     await interaction.member.roles.remove(available_colors
       .map(id => interaction.guild.roles.resolve(id)));
 
-    const color = sample(available_colors);
+    const color = _.sample(available_colors);
 
     await interaction.member.roles.add(color);
 
