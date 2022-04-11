@@ -17,12 +17,13 @@ const format_colorized = winston.format.combine(
 // NOTE padStart(17) because I'm accounting for the color escape codes
 
 const customLevels = {
-  levels: { error: 0, warn: 1, info: 2, message: 3, debug: 4 },
+  levels: { error: 0, warn: 1, info: 2, command: 3, message: 4, debug: 5 },
   colors: {
     error: "red", //"bold white redBG",
     warn: "yellow",
     info: "green",
     message: "white",
+    command: "white",
     debug: "cyan"
   }
 };

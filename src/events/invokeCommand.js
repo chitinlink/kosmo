@@ -19,7 +19,7 @@ export const execute = async (client, interaction) => {
 
   let cmd = interaction.commandName;
   if (interaction.options.data) cmd += ` ${pp(interaction.options.data)}`;
-  logger.info(`${fmt_origin(interaction)} invoked command: ` + cmd);
+  logger.command(`${fmt_origin(interaction)}: /` + cmd);
 
   command.execute(interaction)
     .catch(async (error) => {
