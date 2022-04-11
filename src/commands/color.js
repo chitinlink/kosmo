@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { fmt_list } from "../utils/text.js";
+import { sample } from "lodash";
 
 export const data = new SlashCommandBuilder()
   .setName("color")
@@ -14,7 +15,10 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)))
   .addSubcommand(sub => sub
     .setName("list")
-    .setDescription("List all colors."));
+    .setDescription("List all colors."))
+  .addSubcommand(sub => sub
+    .setName("random")
+    .setDescription("Get a random color."));
 
 export const execute = async interaction => {
   const colors_db = interaction.client.db.get("colors");
@@ -57,7 +61,22 @@ export const execute = async interaction => {
 
     return interaction.reply({
       ephemeral: true,
-      content: ":white_check_mark: Color set!"
+      content: `:white_check_mark: You are now ${color}!`
+    });
+  }
+
+  // color random
+  if (subcommand === "random") {
+    await interaction.member.roles.remove(available_colors
+      .map(id => interaction.guild.roles.resolve(id)));
+
+    const color = sample(available_colors);
+
+    await interaction.member.roles.add(color);
+
+    return interaction.reply({
+      ephemeral: true,
+      content: `:white_check_mark: You are now ${color}!`
     });
   }
 };
