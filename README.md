@@ -11,7 +11,7 @@ Tested on Node.js v16.6.1.
 1. Set up a new [Discord Application](https://discord.com/developers/applications/) with a bot
 2. Give it the Server Members Intent
 3. Invite it to your server with `bot` and `applications.commands` scopes
-4. Restrict the `/manage` and `/say`
+4. Restrict the `/manage` and `/say` commands to mods only on your server
 
 ### Run
 
