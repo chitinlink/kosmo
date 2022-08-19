@@ -1,11 +1,12 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 import { fmt_list } from "../utils/text.js";
 import sample from "lodash/sample.js";
 
 export const data = new SlashCommandBuilder()
   .setName("color")
   .setDescription("Set your color.")
-  .setDefaultPermission(true)
+  .setDefaultMemberPermissions(PermissionsBitField.Default)
+  .setDMPermission(false)
   .addSubcommand(sub => sub
     .setName("set")
     .setDescription("List all colors.")

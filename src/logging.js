@@ -17,12 +17,14 @@ const format_colorized = winston.format.combine(
 // NOTE padStart(17) because I'm accounting for the color escape codes
 
 const customLevels = {
-  levels: { error: 0, warn: 1, info: 2, command: 3, message: 4, debug: 5 },
+  levels: { error: 0, warn: 1, info: 2, command: 3, message: 4, deleted: 5, edited: 6, debug: 7 },
   colors: {
     error: "red", //"bold white redBG",
     warn: "yellow",
     info: "green",
     message: "white",
+    deleted: "white",
+    edited: "white",
     command: "white",
     debug: "cyan"
   }
@@ -39,7 +41,7 @@ const logger = winston.createLogger({
       datePattern: "YYYY-MM-DD",
       zippedArchive: true,
       maxSize: "20m",
-      maxFiles: "14d"
+      maxFiles: "15d"
     }),
   ],
 });

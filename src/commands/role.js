@@ -1,10 +1,11 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 import { fmt_list } from "../utils/text.js";
 
 export const data = new SlashCommandBuilder()
   .setName("role")
   .setDescription("Role-related tools.")
-  .setDefaultPermission(true)
+  .setDefaultMemberPermissions(PermissionsBitField.Default)
+  .setDMPermission(false)
   .addSubcommand(sub => sub
     .setName("list")
     .setDescription("List all self-assignable roles."))

@@ -1,9 +1,10 @@
-import { SlashCommandBuilder, userMention } from "@discordjs/builders";
+import { SlashCommandBuilder, PermissionsBitField, userMention } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("modmail")
   .setDescription("Send a message to the mod team. Can be anonymous.")
-  .setDefaultPermission(true)
+  .setDefaultMemberPermissions(PermissionsBitField.Default)
+  .setDMPermission(false)
   .addStringOption(o => o
     .setName("message")
     .setDescription("Your message")

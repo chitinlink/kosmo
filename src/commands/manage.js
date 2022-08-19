@@ -1,12 +1,10 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { mod_roles } from "../utils/permissions.js";
-
-export const permissions = mod_roles;
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("manage")
   .setDescription("Mod commands.")
-  .setDefaultPermission(false)
+  .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
+  .setDMPermission(false)
   .addSubcommandGroup(group => group
     .setName("role")
     .setDescription("Role command-related options.")

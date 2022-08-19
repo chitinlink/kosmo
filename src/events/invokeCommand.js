@@ -1,4 +1,5 @@
 import logger from "../logging.js";
+import { InteractionType } from "discord.js";
 import { fmt_origin } from "../utils/text.js";
 
 const pp = options => options
@@ -11,7 +12,7 @@ const pp = options => options
 
 export const name = "interactionCreate";
 export const execute = async (client, interaction) => {
-  if (!interaction.isCommand()) return;
+  if (interaction.type !== InteractionType.ApplicationCommand) return;
 
   const command = client.commands.get(interaction.commandName);
 
@@ -25,7 +26,7 @@ export const execute = async (client, interaction) => {
     .catch(async (error) => {
       logger.error(`(${command.data.name}) ${error.stack}`);
       await interaction.reply({
-        content: "There was an error while executing this command, sorry! Bother an admin about it!",
+        content: "There was an error while executing this command, sorry! Bother a mod about it!",
         ephemeral: true
       });
     });

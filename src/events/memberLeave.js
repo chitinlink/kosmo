@@ -1,4 +1,4 @@
-import { userMention } from "@discordjs/builders";
+import { userMention } from "discord.js";
 
 export const name = "guildMemberRemove";
 
