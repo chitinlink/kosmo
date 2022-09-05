@@ -7,7 +7,7 @@ import initCommands from "./setup/initCommands.js";
 import initEvents from "./setup/initEvents.js";
 import initDatabase from "./setup/initDatabase.js";
 import { log_guild_info } from "./utils/log_guild_info.js";
-import { token, notice_channel_id, guild_id } from "../config.js";
+import { token, notice_channel_id, guild_id, membership_role_id } from "../config.js";
 
 // Command-line arguments
 const args = process.argv.splice(2);
@@ -50,11 +50,14 @@ client.db = new Collection();
 // Log in
 await client.login(token);
 
+// Guild the bot is assigned to
+client.assigned_guild = await client.guilds.fetch(guild_id);
+
 // Admin notice channel
 client.notice_channel = await client.channels.fetch(notice_channel_id);
 
-// Guild the bot is assigned to
-client.assigned_guild = await client.guilds.fetch(guild_id);
+// Guild member role
+client.membership_role = await client.assigned_guild.roles.fetch(membership_role_id);
 
 // Register commands
 await deployCommands();

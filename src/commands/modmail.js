@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField, userMention } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("modmail")
@@ -20,7 +20,7 @@ export const execute = async interaction => {
     .send({
       content:
         ":e_mail: " +
-        `${isAnon ? "Anonymous" : userMention(interaction.user.id) }: ` +
+        `${isAnon ? "Anonymous" : interaction.user }: ` +
         interaction.options.getString("message")
     })
     .then(interaction.reply({

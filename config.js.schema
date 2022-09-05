@@ -2,3 +2,4 @@ export const token = "";
 export const client_id = "";
 export const guild_id = "";
 export const notice_channel_id = "";
+export const membership_role_id = "";
